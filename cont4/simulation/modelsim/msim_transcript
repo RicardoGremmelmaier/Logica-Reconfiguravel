@@ -1,0 +1,106 @@
+# Reading D:/Quartus/modelsim_ase/tcl/vsim/pref.tcl 
+# do cont4_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying D:\Quartus\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied D:\Quartus\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -93 -work work {D:/Quartus/quartus/projects/cont4/cont4.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4
+# -- Compiling architecture arch of cont4
+# 
+vcom -reportprogress 300 -work work D:/Quartus/quartus/projects/cont4/cont4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4
+# -- Compiling architecture arch of cont4
+vsim +altera -do cont4_run_msim_rtl_vhdl.do -l msim_transcript -gui rtl_work.cont4
+# vsim +altera -do cont4_run_msim_rtl_vhdl.do -l msim_transcript -gui rtl_work.cont4 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading rtl_work.cont4(arch)
+# do cont4_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Modifying modelsim.ini
+# 
+# vcom -93 -work work {D:/Quartus/quartus/projects/cont4/cont4.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4
+# -- Compiling architecture arch of cont4
+# 
+add wave -r /*
+run 400 ns
+vcom -reportprogress 300 -work work D:/Quartus/quartus/projects/cont4/cont4.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4
+# -- Compiling architecture arch of cont4
+vcom -reportprogress 300 -work work D:/Quartus/quartus/projects/cont4/cont4_tb.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4_tb
+# -- Compiling architecture func of cont4_tb
+vsim +altera -do cont4_run_msim_rtl_vhdl.do -l msim_transcript -gui rtl_work.cont4 rtl_work.cont4_tb
+# vsim +altera -do cont4_run_msim_rtl_vhdl.do -l msim_transcript -gui rtl_work.cont4 rtl_work.cont4_tb 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading rtl_work.cont4(arch)
+# Loading rtl_work.cont4_tb(func)
+# do cont4_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Modifying modelsim.ini
+# 
+# vcom -93 -work work {D:/Quartus/quartus/projects/cont4/cont4.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity cont4
+# -- Compiling architecture arch of cont4
+# 
+add wave -r /*
+run 400 ns
+add wave -r /*
+add wave  \
+sim:/cont4_tb/finished \
+sim:/cont4_tb/RST_s \
+sim:/cont4_tb/CLK_s \
+sim:/cont4_tb/EN_s \
+sim:/cont4_tb/CLR_s \
+sim:/cont4_tb/Q_s

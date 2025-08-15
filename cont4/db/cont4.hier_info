@@ -1,0 +1,20 @@
+|cont4
+RST => count[0].ACLR
+RST => count[1].ACLR
+RST => count[2].ACLR
+RST => count[3].ACLR
+CLK => count[0].CLK
+CLK => count[1].CLK
+CLK => count[2].CLK
+CLK => count[3].CLK
+EN => ~NO_FANOUT~
+CLR => count.OUTPUTSELECT
+CLR => count.OUTPUTSELECT
+CLR => count.OUTPUTSELECT
+CLR => count.OUTPUTSELECT
+Q[0] <= count[0].DB_MAX_OUTPUT_PORT_TYPE
+Q[1] <= count[1].DB_MAX_OUTPUT_PORT_TYPE
+Q[2] <= count[2].DB_MAX_OUTPUT_PORT_TYPE
+Q[3] <= count[3].DB_MAX_OUTPUT_PORT_TYPE
+
+
