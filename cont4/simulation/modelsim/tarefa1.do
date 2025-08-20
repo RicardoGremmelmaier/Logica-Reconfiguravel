@@ -6,7 +6,7 @@ sim:/cont4_tb/RST_s \
 sim:/cont4_tb/CLK_s \
 sim:/cont4_tb/EN_s \
 sim:/cont4_tb/CLR_s \
-sim:/cont4_tb/Q_s
+-radix hex sim:/cont4_tb/Q_s
 config wave -signalnamewidth 1
 run 400 ns
 WaveRestoreZoom {0 fs} {400 ns}
