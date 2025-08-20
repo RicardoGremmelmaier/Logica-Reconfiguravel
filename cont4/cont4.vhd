@@ -24,7 +24,7 @@ begin
 		elsif (CLK'event and CLK = '1') then
 			if (CLR = '1') then
 				count <= "0000";
-			else
+			elsif (EN = '1') then
 				count <= count + 1;
 			end if;
 		end if;
