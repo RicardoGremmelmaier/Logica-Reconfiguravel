@@ -8,7 +8,6 @@ add wave -position end  sim:/cont4_ld_tb/EN
 add wave -position end  sim:/cont4_ld_tb/CLR
 add wave -position end  sim:/cont4_ld_tb/LD
 add wave -position end  sim:/cont4_ld_tb/LOAD
-add wave -position end  sim:/cont4_ld_tb/Q_unsi
 config wave -signalnamewidth 1
-run 400 ns
-WaveRestoreZoom {0 fs} {400 ns}
+run 1000 ns
+WaveRestoreZoom {0 fs} {1000 ns}
