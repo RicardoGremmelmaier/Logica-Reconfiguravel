@@ -27,7 +27,7 @@ Begin
 					If LD = '1' then
 						CONT <= LOAD;
 					Else
-						CONT <= std_logic_vector(unsigned(CONT)+3); --,CONT'length
+						CONT <= std_logic_vector(unsigned(CONT)+1); --,CONT'length
 					End IF;
 				End If;
 			End If;
