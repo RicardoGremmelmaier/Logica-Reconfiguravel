@@ -28,9 +28,10 @@ signal CONT_s : std_logic_vector (7 downto 0);
 signal CONT_1_s, CONT_2_s : std_logic_vector (3 downto 0);
 signal LOAD_s: std_logic_vector (7 downto 0);
 signal CLK_C2: std_logic;
+signal CLR_s: std_logic := '0';
 
-constant reset_c1: std_logic_vector(3 downto 0) := "0110";
-constant reset_c2: std_logic_vector(3 downto 0) := "0000";
+constant LD_c1: std_logic_vector(3 downto 0) := "0110";
+constant LD_c2: std_logic_vector(3 downto 0) := "0000";
 
 begin
 	C1: cont4_LD
@@ -39,7 +40,7 @@ begin
 			CLK => CLK,
 			Q   => CONT_1_s(3 downto 0),
 			EN  => EN,
-			CLR => CLR,
+			CLR => CLR_s,
 			LD  => LD,
 			LOAD=> LOAD_s(3 downto 0)
 		);
@@ -49,16 +50,30 @@ begin
 			CLK => CLK_C2,
 			Q   => CONT_2_s(3 downto 0),
 			EN  => EN,
-			CLR => CLR,
+			CLR => CLR_s,
 			LD  => LD,
 			LOAD=> LOAD_s(7 downto 4)
 		);
 
-	process (RST)
+	process (CLK, RST)
 	begin
-
+		if RST = '1' then
+			CONT_2_s <= LD_c2;
+			CONT_1_s <= LD_c1;
+		elsif CLK'event and CLK = '1' then
+			if CLR = '1' then
+				CONT_2_s <= LD_c2;
+				CONT_1_s <= LD_c1;
+			else
+				if CONT_s > "01000100" then
+					CONT_2_s <= LD_c2;
+					CONT_1_s <= LD_c1;
+				end if;
+			end if;
+		end if;
 	end process;
 	CONT_s <= CONT_2_s(3 downto 0) & CONT_1_s(3 downto 0);
 	CLK_C2 <= not CONT_1_s(3);
+	Q <= CONT_s;
 
 end architecture;
