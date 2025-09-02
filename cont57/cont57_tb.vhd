@@ -68,13 +68,45 @@ begin
         LD  <= '0';
         LOAD <= (others => '0');
 		  
-		  wait for 450 ns;
-		  
-		  CLR <= '1';
-		  
-		  wait for period_time;
-		  
-		  CLR <= '0';
+		wait for 450 ns;
+		
+		CLR <= '1';
+		
+		wait for period_time;
+		
+		CLR <= '0';
+
+		wait for 450 ns;
+
+		LD <= '1';
+		LOAD <= "00101000";
+
+		wait for period_time;
+		LD <= '0';
+
+		wait for 400 ns;
+		EN <= '0';
+
+		wait for 400 ns;
+		EN <= '1';
+
+		wait for 1000 ns;
+
+		LD <= '1';
+		LOAD <= "00000001";
+
+		wait for period_time;
+
+		LD <= '0';
+		LOAD <= "10000000";
+
+		wait for 100 ns;
+
+		LD <= '1';
+
+		wait for period_time;
+
+		LD <= '0';
 
 		wait;
 	end process;
