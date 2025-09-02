@@ -54,22 +54,21 @@ begin
 			LOAD=> LOAD_s(7 downto 4)
 		);
 
-	process (CLK)
-	begin
-		if (unsigned(CONT_s) < 12) then
-			LOAD_s <= LD_CTE;
-			LD_s <= '1';
-		elsif (unsigned(CONT_s) > 68) then
-			LOAD_s <= LD_CTE;
-			LD_s <= '1';
-		else
-			LOAD_s <= LOAD;
-			LD_s <= LD;
-		end if;
-	end process;
-	
-	CONT_s <= CONT_2_s(3 downto 0) & CONT_1_s(3 downto 0);
-	EN_C2 <= '1' when CONT_1_s = "1111" and EN = '1' else '0';
-	Q <= CONT_s;
+	CONT_s <= (CONT_2_s(3 downto 0) & CONT_1_s(3 downto 0));
 
+	Q <= CONT_s;
+	
+	EN_C2 <= '1' WHEN (CONT_1_s = "1111" AND EN = '1')
+				 OR   (LD_s = '1') 		
+			ELSE '0';
+	
+	LD_s <= '1' WHEN (unsigned(CONT_s) < 12)
+				OR   (unsigned(CONT_s) >= 68)
+				OR   CLR = '1'
+				OR   RST = '1' 
+			ELSE LD;  
+			
+	LOAD_s <= LD_CTE WHEN LD = '0'		
+			ELSE LOAD;
+	
 end architecture;
