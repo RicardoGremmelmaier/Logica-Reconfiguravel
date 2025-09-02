@@ -56,8 +56,9 @@ begin
 
 	CONT_s <= (CONT_2_s(3 downto 0) & CONT_1_s(3 downto 0));
 
-	Q <= CONT_s;
-	
+	Q <= CONT_s WHEN ((unsigned(CONT_s) > 11) AND (unsigned(CONT_s) < 69))
+			ELSE LD_CTE;
+
 	EN_C2 <= '1' WHEN (CONT_1_s = "1111" AND EN = '1')
 				 OR   (LD_s = '1') 		
 			ELSE '0';
