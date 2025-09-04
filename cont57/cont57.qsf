@@ -57,4 +57,11 @@ set_global_assignment -name VHDL_FILE cont57.vhd
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name VHDL_FILE cont57_tb.vhd
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS NOT_USED -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH cont57_tb -section_id eda_simulation
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_NAME cont57_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME UUT -section_id cont57_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME cont57_tb -section_id cont57_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "5000 s" -section_id cont57_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE cont57_tb.vhd -section_id cont57_tb
