@@ -2,8 +2,10 @@ db
 incremental_db
 output_files
 simulation
+img
 
 *.bak
 *.rpt
+*.qws
 
 *.zip
