@@ -8,19 +8,19 @@ end;
 architecture func of StateMachine_tb is
     component StateMachine is 
     port (
-        CLK, RST: in std_logic;
+        Clr_btn, Pause_btn, RST: in std_logic;
         State: out std_logic_vector(1 downto 0)
     );
 end component StateMachine;
 
-signal CLK, RST : std_logic := '0';
+signal Clr_btn_s, Pause_btn_s, RST : std_logic := '1';
 signal State_s: std_logic_vector(1 downto 0) := "00";
 constant period_time : time := 100 ns;
-signal finished : std_logic := '0';
 
 begin 
     UUT: StateMachine port map(
-        CLK => CLK,
+        Clr_btn => Clr_btn_s,
+        Pause_btn => Pause_btn_s,
         RST => RST,
         State => State_s
     );
@@ -32,27 +32,34 @@ begin
             wait;
         end process;
 
-
-        sim_time_process: process
-        begin
-            wait for 10 us;
-            finished <= '1';
-            wait;
-        end process sim_time_process;
-
-        clk_proc: process
-        begin
-            while finished /= '1' loop
-                CLK <= '0';
-                wait for period_time/2;
-                CLK <= '1';
-                wait for period_time/2;
-            end loop;
-            wait;
-        end process clk_proc;
-
         process
         begin
+            wait for 400 ns;
+            wait for 150 ns;
+            Clr_btn_s <= '0';
+            wait for 150 ns;
+            Clr_btn_s <= '1';
+            wait for 300 ns;
+            Pause_btn_s <= '0';
+            wait for 150 ns;
+            Pause_btn_s <= '1';
+            wait for 300 ns;
+            Pause_btn_s <= '0';
+            wait for 150 ns;
+            Pause_btn_s <= '1';
+            wait for 300 ns;
+            Pause_btn_s <= '0';
+            wait for 150 ns;
+            Pause_btn_s <= '1';
+            wait for 300 ns;
+				Pause_btn_s <= '0';
+				wait for 150 ns;
+				Pause_btn_s <= '1';
+				wait for 300 ns;
+            Clr_btn_s <= '0';
+            wait for 150 ns;
+            Clr_btn_s <= '1';
+            wait for 500 ns;
     
         wait;
     end process;
