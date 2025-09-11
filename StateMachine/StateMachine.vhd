@@ -12,7 +12,7 @@ end entity StateMachine;
 architecture func of StateMachine is
 
     signal State_s: std_logic_vector(1 downto 0) := "00";
-    -- 00 - Stopped
+    -- 00 - Reseted
     -- 01 - Running
     -- 10 - Paused
 
@@ -34,6 +34,6 @@ architecture func of StateMachine is
             end if;
         end process;
 
-        State <= State_s;
+    State <= State_s;
 
 end func;
