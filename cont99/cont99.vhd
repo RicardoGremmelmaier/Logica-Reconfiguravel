@@ -14,7 +14,7 @@ entity cont99 is
 end entity;
   
 architecture arch of cont99 is
-	component cont4_LD is
+	component cont4_BCD is
 		PORT(RST: in std_logic;
 			CLK: in std_logic;
 			Q: out std_logic_vector(3 downto 0);
@@ -24,16 +24,13 @@ architecture arch of cont99 is
 			LOAD: in std_logic_vector (3 downto 0));
 	end component;  
 	
-signal CONT_s : std_logic_vector (7 downto 0);
 signal CONT_1_s, CONT_2_s : std_logic_vector (3 downto 0);
 signal LOAD_s: std_logic_vector (7 downto 0);
 signal CLR_s: std_logic;
 signal EN_C2: std_logic;
 
-constant LD_CTE: std_logic_vector(7 downto 0) := "00001100";
-
 begin
-	C1: cont4_LD
+	C1: cont4_BCD
 		PORT MAP (
 			RST => RST,
 			CLK => CLK,
@@ -43,7 +40,7 @@ begin
 			LD  => LD,
 			LOAD=> LOAD_s(3 downto 0)
 		);
-	C2: cont4_LD
+	C2: cont4_BCD
 		PORT MAP (
 			RST => RST,
 			CLK => CLK,
@@ -53,16 +50,14 @@ begin
 			LD  => LD,
 			LOAD=> LOAD_s(7 downto 4)
 		);
-
-	CONT_s <= (CONT_2_s(3 downto 0) & CONT_1_s(3 downto 0));
 	
-	Q <= CONT_s;
+	Q <= CONT_2_s & CONT_1_s;
 
-	EN_C2 <= '1' WHEN (CONT_1_s = "1111" AND EN = '1')		
+	EN_C2 <= '1' WHEN (CONT_1_s = "1001" AND EN = '1')		
 			ELSE '0';
 	
-	CLR_s <= '1' WHEN ((unsigned(CONT_s) >= 99) AND EN = '1')
-				   OR   CLR = '1'
+	CLR_s <= '1' WHEN (CONT_2_s = "1001" AND CONT_1_s = "1001" AND EN = '1')
+				   OR (CLR = '1')
 			ELSE '0';
 
 	LOAD_s <= LOAD;
