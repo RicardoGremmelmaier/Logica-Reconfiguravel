@@ -55,8 +55,8 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
 set_location_assignment PIN_N2 -to CLK
-set_location_assignment PIN_N26 -to CLR_BTN
-set_location_assignment PIN_P25 -to START_STOP_BTN
+set_location_assignment PIN_G26 -to CLR_BTN
+set_location_assignment PIN_N23 -to START_STOP_BTN
 set_location_assignment PIN_V13 -to HEX_0[6]
 set_location_assignment PIN_V14 -to HEX_0[5]
 set_location_assignment PIN_AE11 -to HEX_0[4]
@@ -99,4 +99,6 @@ set_global_assignment -name VHDL_FILE ../cont59/cont59.vhd
 set_global_assignment -name VHDL_FILE ../cont99/cont99.vhd
 set_global_assignment -name VHDL_FILE ../Divisor/Divisor.vhd
 set_global_assignment -name VHDL_FILE ../hexTo7Seg/hexTo7Seg.vhd
+set_location_assignment PIN_AD12 -to STATE[1]
+set_location_assignment PIN_AE12 -to STATE[0]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
