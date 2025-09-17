@@ -11,22 +11,21 @@ entity cronometro is
         HEX_0: out std_logic_vector(7 downto 0); -- Menos significativo
         HEX_1: out std_logic_vector(7 downto 0);
         HEX_2: out std_logic_vector(7 downto 0);
-        HEX_3: out std_logic_vector(7 downto 0); -- Mais significativo
-        DEBUG_SEG: out std_logic_vector(7 downto 0);
-        DEBUG_CENT: out std_logic_vector(7 downto 0)
+        HEX_3: out std_logic_vector(7 downto 0) -- Mais significativo
     );
 end entity;
 
 architecture arch of cronometro is
 
-    signal Clk_en_cont99_s: std_logic := '0';
-    signal Clk_en_cont59_s: std_logic := '0';
+    signal EN_cont59_s: std_logic := '0';
+    signal EN_cont99_s: std_logic := '0';
+    signal Clk_div_s: std_logic := '0';
     signal State_s: std_logic_vector(1 downto 0) := "00";
-    signal Q_cent_s: std_logic_vector(7 downto 0) := (others => '0');
-    signal Q_seg_s: std_logic_vector(7 downto 0) := (others => '0');
     signal StartStop_btn_s: std_logic := '1';
     signal Clr_btn_s: std_logic := '1';
     signal Clr_s: std_logic := '0';
+    signal Q_cent_s: std_logic_vector(7 downto 0) := (others => '0');
+    signal Q_seg_s: std_logic_vector(7 downto 0) := (others => '0');
 
     component Divisor is 
         port(   CLK:    in std_logic;
@@ -77,14 +76,14 @@ architecture arch of cronometro is
         Divisor_cent: Divisor port map(
             CLK => CLK,
             RST => RST,
-            DIV50 => Clk_en_cont99_s
+            DIV50 => Clk_div_s
         );
 
         cont_cent: cont99 port map(
             RST => RST,
             CLK => CLK,
             Q => Q_cent_s,
-            EN => Clk_en_cont99_s,
+            EN => EN_cont99_s,
             CLR => Clr_s,
             LD => '0',
             LOAD => (others => '0')
@@ -94,29 +93,29 @@ architecture arch of cronometro is
             RST => RST,
             CLK => CLK,
             Q => Q_seg_s,
-            EN => Clk_en_cont59_s,
+            EN => EN_cont59_s,
             CLR => Clr_s,
             LD => '0',
             LOAD => (others => '0')
         );
 
         hex0: hexTo7Seg port map(
-            DataIn => Q_seg_s(3 downto 0),
+            DataIn => Q_cent_s(3 downto 0),
             DataOut => HEX_0
         );
 
         hex1: hexTo7Seg port map(
-            DataIn => Q_seg_s(7 downto 4),
+            DataIn => Q_cent_s(7 downto 4),
             DataOut => HEX_1
         );
 
         hex2: hexTo7Seg port map(
-            DataIn => Q_cent_s(3 downto 0),
+            DataIn => Q_seg_s(3 downto 0),
             DataOut => HEX_2
         );
 
         hex3: hexTo7Seg port map(
-            DataIn => Q_cent_s(7 downto 4),
+            DataIn => Q_seg_s(7 downto 4),
             DataOut => HEX_3
         );
 
@@ -127,11 +126,10 @@ architecture arch of cronometro is
             State => State_s
         );
 
-        DEBUG_SEG <= Q_seg_s;
-        DEBUG_CENT <= Q_cent_s;
-
         Clr_s <= '1' when State_s = "00" else '0';
 
-        Clk_en_cont59_s <= '1' when (Q_cent_s = "10011001" and Clk_en_cont99_s = '1' and State_s = "01") else '0';
+        EN_cont99_s <= Clk_div_s when State_s = "01" else '0';
+
+        EN_cont59_s <= '1' when (Q_cent_s = "10011001" and EN_cont99_s = '1' and State_s = "01") else '0';
 
     end architecture;

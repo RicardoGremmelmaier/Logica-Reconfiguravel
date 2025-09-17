@@ -53,14 +53,6 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VHDL_FILE ../StateMachine/StateMachine.vhd
-set_global_assignment -name VHDL_FILE cronometro_tb.vhd
-set_global_assignment -name VHDL_FILE cronometro.vhd
-set_global_assignment -name VHDL_FILE ../cont4_LD/cont4_LD.vhd
-set_global_assignment -name VHDL_FILE ../cont59/cont59.vhd
-set_global_assignment -name VHDL_FILE ../cont99/cont99.vhd
-set_global_assignment -name VHDL_FILE ../Divisor/Divisor.vhd
-set_global_assignment -name VHDL_FILE ../hexTo7Seg/hexTo7Seg.vhd
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
 set_location_assignment PIN_N2 -to CLK
 set_location_assignment PIN_N26 -to CLR_BTN
@@ -98,4 +90,13 @@ set_location_assignment PIN_AE23 -to HEX_0[7]
 set_location_assignment PIN_AF23 -to HEX_1[7]
 set_location_assignment PIN_AB21 -to HEX_2[7]
 set_location_assignment PIN_AC22 -to HEX_3[7]
+set_global_assignment -name VHDL_FILE ../cont4_BCD/cont4_BCD.vhd
+set_global_assignment -name VHDL_FILE ../StateMachine/StateMachine.vhd
+set_global_assignment -name VHDL_FILE cronometro_tb.vhd
+set_global_assignment -name VHDL_FILE cronometro.vhd
+set_global_assignment -name VHDL_FILE ../cont4_LD/cont4_LD.vhd
+set_global_assignment -name VHDL_FILE ../cont59/cont59.vhd
+set_global_assignment -name VHDL_FILE ../cont99/cont99.vhd
+set_global_assignment -name VHDL_FILE ../Divisor/Divisor.vhd
+set_global_assignment -name VHDL_FILE ../hexTo7Seg/hexTo7Seg.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
