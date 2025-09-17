@@ -67,8 +67,11 @@ architecture arch of cronometro is
     -- 01 - Running
     -- 10 - Paused
     component StateMachine is
-        port(   Clr_btn, Pause_btn, RST: in std_logic;
-                State: out std_logic_vector(1 downto 0)
+        port( clk      : in std_logic;                      
+              RST      : in std_logic;                        
+              Clr_btn  : in std_logic;                        
+              Pause_btn: in std_logic;                        
+              State    : out std_logic_vector(1 downto 0)     
         );
     end component;
 
@@ -121,6 +124,7 @@ architecture arch of cronometro is
         );
 
         SM: StateMachine port map(
+            clk => CLK,
             Clr_btn => CLR_BTN,
             Pause_btn => START_STOP_BTN,
             RST => RST,
