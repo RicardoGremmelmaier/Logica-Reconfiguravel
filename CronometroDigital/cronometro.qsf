@@ -63,8 +63,8 @@ set_global_assignment -name VHDL_FILE ../Divisor/Divisor.vhd
 set_global_assignment -name VHDL_FILE ../hexTo7Seg/hexTo7Seg.vhd
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
 set_location_assignment PIN_N2 -to CLK
-set_location_assignment PIN_G26 -to CLR_BTN
-set_location_assignment PIN_N23 -to START_STOP_BTN
+set_location_assignment PIN_N26 -to CLR_BTN
+set_location_assignment PIN_P25 -to START_STOP_BTN
 set_location_assignment PIN_V13 -to HEX_0[6]
 set_location_assignment PIN_V14 -to HEX_0[5]
 set_location_assignment PIN_AE11 -to HEX_0[4]
