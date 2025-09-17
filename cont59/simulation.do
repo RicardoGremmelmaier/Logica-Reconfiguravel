@@ -3,7 +3,7 @@ vdel -lib rtl_work -all
 }
 vlib rtl_work
 vmap work rtl_work
-vcom -93 -work work {C:/Faculdade/OitavoPeriodo/Logica-Reconfiguravel/cont4_LD/cont4_LD.vhd}
+vcom -93 -work work {C:/Faculdade/OitavoPeriodo/Logica-Reconfiguravel/cont4_BCD/cont4_BCD.vhd}
 vcom -93 -work work {C:/Faculdade/OitavoPeriodo/Logica-Reconfiguravel/cont59/cont59.vhd}
 vcom -reportprogress 300 -work work C:/Faculdade/OitavoPeriodo/Logica-Reconfiguravel/cont59/cont59_tb.vhd
 vsim rtl_work.cont59_tb
