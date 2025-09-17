@@ -14,7 +14,10 @@ architecture arch of cronometro_tb is
 		        HEX_0: out std_logic_vector(7 downto 0);
 		        HEX_1: out std_logic_vector(7 downto 0);
 		        HEX_2: out std_logic_vector(7 downto 0);
-		        HEX_3: out std_logic_vector(7 downto 0));
+		        HEX_3: out std_logic_vector(7 downto 0);
+				DEBUG_SEG: out std_logic_vector(7 downto 0);
+				DEBUG_CENT: out std_logic_vector(7 downto 0)
+			);
 	end component;  
 
 -- Sinais de simulacao
@@ -26,6 +29,8 @@ architecture arch of cronometro_tb is
 	signal hex3_s   : std_logic_vector(7 downto 0);
 	signal StartStop_btn_s : std_logic := '1';
 	signal Clr_btn_s : std_logic := '1';
+	signal debug_seg_s : std_logic_vector(7 downto 0);
+	signal debug_cent_s : std_logic_vector(7 downto 0);
 
 
 -- Constantes
@@ -41,7 +46,9 @@ begin
 			HEX_0 => hex0_s,
 			HEX_1 => hex1_s,
 			HEX_2 => hex2_s,
-			HEX_3 => hex3_s);
+			HEX_3 => hex3_s,
+			DEBUG_SEG => debug_seg_s,
+			DEBUG_CENT => debug_cent_s);
 -- Clock
 	clk_proc: process
 	begin
@@ -70,8 +77,8 @@ begin
 		wait for 250 ns;
 		StartStop_btn_s <= '0';
 		
-		-- wait for period_time;
-        -- StartStop_btn_s <= '1';
+		wait for period_time;
+        StartStop_btn_s <= '1';
 		
 		-- wait for 450 ns;
         -- Clr_btn_s <= '0';

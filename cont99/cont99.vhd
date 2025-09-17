@@ -61,7 +61,7 @@ begin
 	EN_C2 <= '1' WHEN (CONT_1_s = "1111" AND EN = '1')		
 			ELSE '0';
 	
-	CLR_s <= '1' WHEN (unsigned(CONT_s) >= 99)
+	CLR_s <= '1' WHEN ((unsigned(CONT_s) >= 99) AND EN = '1')
 				   OR   CLR = '1'
 			ELSE '0';
 

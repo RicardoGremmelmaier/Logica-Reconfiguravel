@@ -11,7 +11,9 @@ entity cronometro is
         HEX_0: out std_logic_vector(7 downto 0); -- Menos significativo
         HEX_1: out std_logic_vector(7 downto 0);
         HEX_2: out std_logic_vector(7 downto 0);
-        HEX_3: out std_logic_vector(7 downto 0) -- Mais significativo
+        HEX_3: out std_logic_vector(7 downto 0); -- Mais significativo
+        DEBUG_SEG: out std_logic_vector(7 downto 0);
+        DEBUG_CENT: out std_logic_vector(7 downto 0)
     );
 end entity;
 
@@ -124,6 +126,9 @@ architecture arch of cronometro is
             RST => RST,
             State => State_s
         );
+
+        DEBUG_SEG <= Q_seg_s;
+        DEBUG_CENT <= Q_cent_s;
 
         Clr_s <= '1' when State_s = "00" else '0';
 
