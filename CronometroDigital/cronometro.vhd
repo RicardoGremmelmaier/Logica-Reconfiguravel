@@ -8,6 +8,7 @@ entity cronometro is
         RST: in std_logic;
         START_STOP_BTN: in std_logic;
         CLR_BTN: in std_logic;
+        STATE: out std_logic_vector(1 downto 0);
         HEX_0: out std_logic_vector(7 downto 0); -- Menos significativo
         HEX_1: out std_logic_vector(7 downto 0);
         HEX_2: out std_logic_vector(7 downto 0);
@@ -127,6 +128,8 @@ architecture arch of cronometro is
         );
 
         Clr_s <= '1' when State_s = "00" else '0';
+
+        STATE <= State_s;
 
         EN_cont99_s <= Clk_div_s when State_s = "01" else '0';
 

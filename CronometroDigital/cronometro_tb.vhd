@@ -74,21 +74,21 @@ begin
 		wait for period_time;
         StartStop_btn_s <= '1';
 		
-		-- wait for 450 ns;
-        -- Clr_btn_s <= '0';
+		wait for 450 ns;
+        Clr_btn_s <= '0';
 
-		-- wait for period_time;
-        -- StartStop_btn_s <= '0';
-        -- Clr_btn_s <= '1';
+		wait for period_time;
+        StartStop_btn_s <= '0';
+        Clr_btn_s <= '1';
 
-		-- wait for period_time;
-        -- StartStop_btn_s <= '1';
+		wait for period_time;
+        StartStop_btn_s <= '1';
 
-		-- wait for period_time;
-        -- Clr_btn_s <= '0';
+		wait for period_time;
+        Clr_btn_s <= '0';
 
-        -- wait for period_time;
-        -- Clr_btn_s <= '1';
+        wait for period_time;
+        Clr_btn_s <= '1';
 
         wait for 2000 ns;
 
