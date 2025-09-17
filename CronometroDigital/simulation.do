@@ -15,6 +15,8 @@ vsim rtl_work.cronometro_tb
 add wave  \
 sim:/cronometro_tb/CLK \
 sim:/cronometro_tb/RST \
+-radix unsigned sim:/cronometro_tb/debug_cent_s \
+-radix unsigned sim:/cronometro_tb/debug_seg_s \
 sim:/cronometro_tb/hex0_s \
 sim:/cronometro_tb/hex1_s \
 sim:/cronometro_tb/hex2_s \
