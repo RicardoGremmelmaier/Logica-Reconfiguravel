@@ -127,6 +127,6 @@ architecture arch of cronometro is
 
         Clr_s <= '1' when State_s = "00" else '0';
 
-        Clk_en_cont59_s <= '1' when Q_cent_s = "01100011" and Clk_en_cont99_s = '1' and State_s = "01" else '0';
+        Clk_en_cont59_s <= '1' when (Q_cent_s = "10011001" and Clk_en_cont99_s = '1' and State_s = "01") else '0';
 
     end architecture;
