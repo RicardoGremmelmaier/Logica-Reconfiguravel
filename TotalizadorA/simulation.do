@@ -8,5 +8,5 @@ add wave -position insertpoint  \
 sim:/totalizadora_tb/UUT/counter \
 sim:/totalizadora_tb/UUT/iterator
 config wave -signalnamewidth 1
-run 1000 ns
-WaveRestoreZoom {0 fs} {1000 ns}
+run 500 ns
+WaveRestoreZoom {0 fs} {500 ns}
