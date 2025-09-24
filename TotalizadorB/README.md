@@ -32,5 +32,44 @@ Os resultados da simulação podem ser vistos a seguir:
 
     * Atraso 3 em Gate Level
     ![Simulação em GL](./img/TotalizadorB_atraso3.png)
+
 ## Frequência máxima obtida
 
+### Na simulação gate_level
+
+Para realizar a frequência máxima obtida, foi necessário visualizar o tempo aproximado entre o delay gerado e o início da subida do clock em que era pra ocorrer a mudança do valor.
+
+Desse modo, fazendo uma média dos valores de atraso obtido para cada um dos totalizadores, temos:
+
+* **Totalizador usando variables e loop for**:
+
+$T_{delay} = \frac{(56.6 - 50) + (116.6 - 110) + (136,4 - 130)}{3} = 6.5\ ns$
+
+$f_{max} = \frac{1}{T_{delay}} = \frac{1}{6.5\ ns} \approx 154\ MHz$
+
+* **Totalizador usando variables e loop while**:
+
+$T_{delay} = \frac{(56.6 - 50) + (116.6 - 110) + (136,4 - 130)}{3} = 6.5\ ns$
+
+$f_{max} = \frac{1}{T_{delay}} = \frac{1}{6.5\ ns} \approx 154\ MHz$
+
+* **Totalizador usando variables e if-then**:
+
+$T_{delay} = \frac{(56.3 - 50) + (116.4 - 110) + (136,3 - 130)}{3} = 6.3\ ns$
+
+$f_{max} = \frac{1}{T_{delay}} = \frac{1}{6.3\ ns} \approx 159\ MHz$
+
+* **Totalizador usando signals e case-when**:
+
+$T_{delay} = \frac{(56.3 - 50) + (116.4 - 110) + (136,3 - 130)}{3} = 6.3\ ns$
+
+$f_{max} = \frac{1}{T_{delay}} = \frac{1}{6.3\ ns} \approx 159\ MHz$
+
+* **Totalizador usando signals e soma direta com conversão direta**:
+
+$T_{delay} = \frac{(56.3 - 50) + (116.4 - 110) + (136,2 - 130)}{3} = 6.3\ ns$
+
+$f_{max} = \frac{1}{T_{delay}} = \frac{1}{6.3\ ns} \approx 159\ MHz$
+
+
+Por não ser utilizado uma grande quantidade de algarismos significativos, os três últimos totalizadores mantiveram uma frequência máxima muito similar, no entanto, através das simulações, é possível observar que o totalizador 5 foi o que obteve uma melhor performance, já que seu hardware consiste em cascateamento de somadores, o que é bem simples.

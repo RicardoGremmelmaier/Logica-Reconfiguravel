@@ -18,6 +18,3 @@ Os resultados da simulação podem ser vistos a seguir:
 
     * Atraso em Gate Level
     ![Simulação em GL](./img/TotalizadorA_atraso.png)
-  
-## Frequência máxima obtida
-
