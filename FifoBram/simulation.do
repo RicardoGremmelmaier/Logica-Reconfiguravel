@@ -10,7 +10,7 @@ vcom -reportprogress 300 -work work C:/Faculdade/OitavoPeriodo/Logica-Reconfigur
 vsim rtl_work.fifobram_tb
 add wave -position insertpoint  \
 sim:/fifobram_tb/UUT/CLK \
--radix hexadecimal sim:/fifobram_tb/UUT/DATA_OUT \
+-radix unsigned sim:/fifobram_tb/UUT/DATA_OUT \
 sim:/fifobram_tb/UUT/current_state \
 sim:/fifobram_tb/UUT/next_state \
 -radix unsigned sim:/fifobram_tb/UUT/counter_s \
@@ -20,12 +20,12 @@ sim:/fifobram_tb/UUT/fifo_almost_full_s \
 sim:/fifobram_tb/UUT/rdreq_s \
 sim:/fifobram_tb/UUT/wrreq_s \
 sim:/fifobram_tb/UUT/fifo_usedw_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_1_address_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_1_data_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_1_out_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_2_address_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_2_data_s \
--radix hexadecimal sim:/fifobram_tb/UUT/bram_2_out_s 
+-radix unsigned sim:/fifobram_tb/UUT/bram_1_address_s \
+-radix unsigned sim:/fifobram_tb/UUT/bram_1_data_s \
+-radix unsigned sim:/fifobram_tb/UUT/bram_1_out_s \
+-radix unsigned sim:/fifobram_tb/UUT/bram_2_address_s \
+-radix unsigned sim:/fifobram_tb/UUT/bram_2_data_s \
+-radix unsigned sim:/fifobram_tb/UUT/bram_2_out_s 
 config wave -signalnamewidth 1
 run 350 us
 WaveRestoreZoom {0 fs} {350 us}

@@ -11,7 +11,7 @@ end entity;
 
 architecture arch of FifoBram is
     -- Types
-    type state_type is (WR_FIFO, WR_WAIT, RD_FIFO, RD_WAIT, BRAM_INIT);
+    type state_type is (WR_FIFO, WR_WAIT, RD_FIFO, RD_WAIT, BRAM_INIT, WR_DONE, RD_DONE);
     signal prev_wr_state_s, current_state, next_state : state_type := BRAM_INIT;
 
     -- Signals
@@ -20,7 +20,7 @@ architecture arch of FifoBram is
     signal fifo_empty_s, fifo_full_s : std_logic := '0';
     signal fifo_almost_empty_s, fifo_almost_full_s : std_logic := '0';
     signal fifo_usedw_s : std_logic_vector(9 downto 0) := (others => '0');
-    signal rdreq_s, wrreq_s : std_logic := '0';
+    signal rdreq_s, wrreq_s, wr_done_s, rd_done_s : std_logic := '0';
 
     signal bram_1_data_s, bram_2_data_s, bram_1_out_s, bram_2_out_s : std_logic_vector(15 downto 0) := (others => '0');
     signal bram_1_address_s, bram_2_address_s : std_logic_vector(10 downto 0) := (others => '0');
@@ -95,7 +95,7 @@ begin
             -- atualiza o estado atual
             current_state <= next_state;
 
-            if current_state = WR_FIFO or current_state = WR_WAIT then
+            if current_state = WR_FIFO or current_state = WR_WAIT or current_state = WR_DONE then
             prev_wr_state_s <= current_state;
             end if;
 
@@ -125,12 +125,18 @@ begin
 
                 -- incrementa endereços APENAS quando os sinais de req foram gerados
                 -- (wrreq_s / rdreq_s são gerados no processo combinacional abaixo)
-                if wrreq_s = '1' then
+                if wrreq_s = '1' and wr_done_s = '0' then
                     bram_1_address_s <= std_logic_vector(unsigned(bram_1_address_s) + 1);
+                    if unsigned(bram_1_address_s) = 2047 then
+                        wr_done_s <= '1';
+                    end if;
                 end if;
 
-                if rdreq_s = '1' then
+                if rdreq_s = '1' and rd_done_s = '0' then
                     bram_2_address_s <= std_logic_vector(unsigned(bram_2_address_s) + 1);
+                    if unsigned(bram_2_address_s) = 2047 then
+                        rd_done_s <= '1';
+                    end if;
                 end if;
             end if;
         end if;
@@ -138,14 +144,18 @@ begin
 
 --------------------------Combinational State Machine (decisions)--------------------------
     -- decide next_state, wrreq_s, rdreq_s e wren_s com base em current_state, FIFO e counter_s
-    process(current_state, fifo_almost_full_s, fifo_almost_empty_s, fifo_empty_s, counter_s)
+    process(current_state, fifo_almost_full_s, fifo_almost_empty_s, fifo_empty_s, counter_s, wr_done_s, rd_done_s, init_done_s, prev_wr_state_s)
     begin
         -- defaults
         next_state <= current_state;
         wrreq_s <= '0';
         rdreq_s <= '0';
         bram_2_wren_s <= '0';
-        
+
+        if rd_done_s = '1' then
+            next_state <= RD_DONE;
+        else
+     
             -- prioridade: quando counter indica ciclo de leitura (7º ciclo)
             if counter_s = 6 then
                 -- se FIFO está vazia, vai para RD_WAIT (espera por dados)
@@ -161,9 +171,14 @@ begin
             else  -- não é ciclo de leitura; tratamos escrita/espera
                 case current_state is
                     when WR_FIFO =>
+                        -- Se ja escreveu tudo, para
+                        if wr_done_s = '1' then
+                            next_state <= WR_DONE;
+                        
                         -- enquanto não quase cheio, continua escrevendo
-                        if fifo_almost_full_s = '1' then
+                        elsif fifo_almost_full_s = '1' then
                             next_state <= WR_WAIT;
+
                         else
                             next_state <= WR_FIFO;
                             -- escreve a cada clock (quando não é ciclo de leitura)
@@ -171,8 +186,12 @@ begin
                         end if;
 
                     when WR_WAIT =>
+                        -- Se ja escreveu tudo, para
+                        if wr_done_s = '1' then
+                            next_state <= WR_DONE;
+                        
                         -- espera até sair de almost_full e entrar em almost_empty
-                        if fifo_almost_empty_s = '1' then
+                        elsif fifo_almost_empty_s = '1' then
                             next_state <= WR_FIFO;
                         else
                             next_state <= WR_WAIT;
@@ -183,6 +202,8 @@ begin
                         if prev_wr_state_s = WR_FIFO then
                             next_state <= WR_FIFO;
                             wrreq_s <= '1';
+                        elsif prev_wr_state_s = WR_DONE then
+                            next_state <= WR_DONE;
                         else
                             next_state <= WR_WAIT;
                         end if;
@@ -203,8 +224,17 @@ begin
                             next_state <= BRAM_INIT;
                         end if;
 
+                    when WR_DONE =>
+                        next_state <= WR_DONE;
+                        wrreq_s <= '0';
+
+                    when RD_DONE =>
+                        next_state <= RD_DONE;
+                        rdreq_s <= '0';
+
                 end case;
             end if;
+        end if;
     end process;
 
     DATA_OUT <= bram_2_out_s;

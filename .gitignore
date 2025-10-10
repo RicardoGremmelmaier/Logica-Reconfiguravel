@@ -3,6 +3,7 @@ incremental_db
 output_files
 simulation
 img
+lab5
 
 *.bak
 *.rpt
