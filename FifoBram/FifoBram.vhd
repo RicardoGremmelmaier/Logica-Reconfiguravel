@@ -88,43 +88,50 @@ begin
     );
 
 ------------------------Sequential (clocked) process--------------------------
-    -- atualiza estado, contador e realiza incrementos sincronamente
     process(CLK)
     begin
         if rising_edge(CLK) then
-            -- atualiza o estado atual
             current_state <= next_state;
 
             if current_state = WR_FIFO or current_state = WR_WAIT or current_state = WR_DONE then
-            prev_wr_state_s <= current_state;
+                prev_wr_state_s <= current_state;
             end if;
 
-            -- Lógica para carregar a BRAM 1
+            -- ==================== INICIALIZAÇÃO DA BRAM 1 ====================
             if init_done_s = '0' then
+                -- escreve na BRAM 1 endereços 0..2047
                 bram_1_data_s <= "00000" & std_logic_vector(init_addr_s);
                 bram_1_address_s <= std_logic_vector(init_addr_s);
                 bram_1_wren_s <= '1';
+
                 if init_addr_s = 2047 then
                     init_done_s <= '1';
                     bram_1_wren_s <= '0';
                     bram_1_address_s <= (others => '0');
-                    counter_s <= "111";
+                    init_addr_s <= (others => '0');
+                    counter_s <= (others => '0');  -- reseta contador no fim da inicialização
                 else
                     init_addr_s <= init_addr_s + 1;
                 end if;
-            else
-                -- contador sempre incrementando; zera quando atinge 7
-                --if next_state /= BRAM_INIT then
-                    if counter_s = 7 then
-                        counter_s <= "001";
-                    else
-                        bram_1_wren_s <= '0';
-                        counter_s <= counter_s + 1;
-                    end if;
-                --end if;
 
-                -- incrementa endereços APENAS quando os sinais de req foram gerados
-                -- (wrreq_s / rdreq_s são gerados no processo combinacional abaixo)
+            else
+                -- ==================== OPERAÇÃO NORMAL ====================
+                bram_1_wren_s <= '0';
+
+                -- contador reseta ao sair do BRAM_INIT (transição segura)
+                if current_state = BRAM_INIT and next_state = WR_FIFO then
+                    counter_s <= (others => '0');
+                    bram_1_address_s <= (others => '0');
+                    bram_2_address_s <= (others => '0');
+
+                -- contador cíclico (0..7)
+                elsif counter_s = 7 then
+                    counter_s <= "001";
+                else
+                    counter_s <= counter_s + 1;
+                end if;
+
+                -- incrementa endereços apenas quando efetivamente faz req
                 if wrreq_s = '1' and wr_done_s = '0' then
                     bram_1_address_s <= std_logic_vector(unsigned(bram_1_address_s) + 1);
                     if unsigned(bram_1_address_s) = 2047 then
@@ -142,11 +149,10 @@ begin
         end if;
     end process;
 
---------------------------Combinational State Machine (decisions)--------------------------
-    -- decide next_state, wrreq_s, rdreq_s e wren_s com base em current_state, FIFO e counter_s
-    process(current_state, fifo_almost_full_s, fifo_almost_empty_s, fifo_empty_s, counter_s, wr_done_s, rd_done_s, init_done_s, prev_wr_state_s)
+--------------------------Combinational State Machine--------------------------
+    process(current_state, fifo_almost_full_s, fifo_almost_empty_s, fifo_empty_s, 
+            counter_s, wr_done_s, rd_done_s, init_done_s, prev_wr_state_s)
     begin
-        -- defaults
         next_state <= current_state;
         wrreq_s <= '0';
         rdreq_s <= '0';
@@ -155,42 +161,29 @@ begin
         if rd_done_s = '1' then
             next_state <= RD_DONE;
         else
-     
-            -- prioridade: quando counter indica ciclo de leitura (7º ciclo)
             if counter_s = 6 then
-                -- se FIFO está vazia, vai para RD_WAIT (espera por dados)
                 if fifo_empty_s = '1' then
                     next_state <= RD_WAIT;
                 else
-                    -- há dados: faz uma leitura (1 palavra) neste ciclo
                     next_state <= RD_FIFO;
                     rdreq_s <= '1';
                     bram_2_wren_s <= '1';
                 end if;
-
-            else  -- não é ciclo de leitura; tratamos escrita/espera
+            else
                 case current_state is
                     when WR_FIFO =>
-                        -- Se ja escreveu tudo, para
                         if wr_done_s = '1' then
                             next_state <= WR_DONE;
-                        
-                        -- enquanto não quase cheio, continua escrevendo
                         elsif fifo_almost_full_s = '1' then
                             next_state <= WR_WAIT;
-
                         else
                             next_state <= WR_FIFO;
-                            -- escreve a cada clock (quando não é ciclo de leitura)
                             wrreq_s <= '1';
                         end if;
 
                     when WR_WAIT =>
-                        -- Se ja escreveu tudo, para
                         if wr_done_s = '1' then
                             next_state <= WR_DONE;
-                        
-                        -- espera até sair de almost_full e entrar em almost_empty
                         elsif fifo_almost_empty_s = '1' then
                             next_state <= WR_FIFO;
                         else
@@ -198,7 +191,6 @@ begin
                         end if;
 
                     when RD_FIFO =>
-                        -- Pode voltar para WR_FIFO ou WR_WAIT dependendo do estado anterior de WR da Fifo
                         if prev_wr_state_s = WR_FIFO then
                             next_state <= WR_FIFO;
                             wrreq_s <= '1';
@@ -209,7 +201,6 @@ begin
                         end if;
 
                     when RD_WAIT =>
-                        -- se houver dados agora, volta pra WR_FIFO e retoma escritas
                         if fifo_empty_s = '0' then
                             next_state <= WR_FIFO;
                         else
@@ -217,7 +208,6 @@ begin
                         end if;
                     
                     when BRAM_INIT =>
-                        -- após inicializar a BRAM, vai para estado de escrita
                         if init_done_s = '1' then
                             next_state <= WR_FIFO;
                         else
@@ -231,7 +221,6 @@ begin
                     when RD_DONE =>
                         next_state <= RD_DONE;
                         rdreq_s <= '0';
-
                 end case;
             end if;
         end if;
