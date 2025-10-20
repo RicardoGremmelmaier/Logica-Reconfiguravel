@@ -25,13 +25,14 @@ begin
 		elsif rising_edge(CLK) then
 			if WR_EN = '1' then
 				DataOut_s <= DataIn;
+				if SC = '1' then
+					sc_pending <= '1';
+				end if;
 			end if;
 
 			if sc_pending = '1' then
 				DataOut_s  <= (others => '0');
 				sc_pending <= '0';
-			elsif SC = '1' then
-				sc_pending <= '1';
 			end if;
 		end if;
 	end process;
