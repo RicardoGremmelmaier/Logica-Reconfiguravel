@@ -4,6 +4,9 @@ output_files
 simulation
 img
 lab5
+software
+HostSystem*
+.qsys_edit
 
 *.bak
 *.rpt
